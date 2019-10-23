@@ -1,3 +1,4 @@
+#include "tokenizer_rules.h"
 #include <stdio.h>
 #include <string.h>
 

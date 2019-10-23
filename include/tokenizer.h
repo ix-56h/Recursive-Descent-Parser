@@ -6,7 +6,7 @@
 /*   By: niguinti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 05:04:16 by niguinti          #+#    #+#             */
-/*   Updated: 2019/10/22 20:08:08 by niguinti         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:03:30 by niguinti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ typedef enum	e_toktype {
 	TOK_ERROR,
 	TOK_SP,
 	TOK_EQUAL,
-	TOK_SUB,
+	TOK_LSUB,
+	TOK_RSUB,
 	TOK_EOF,
 	TOK_DIGIT,
 	/*
@@ -51,4 +52,5 @@ void		ignore_chr_class(char *s, int *i, t_chr_class chr_class);
 int			is_opening_class(t_chr_class chr_class);
 t_tokens	*save_token(char *s, int anchor, t_toktype toktype);
 t_tokens	*tokenizer(char *s);
+t_tokens	*get_next_token(char *s);
 #endif

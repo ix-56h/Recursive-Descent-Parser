@@ -9,7 +9,7 @@ int main(int ac, char **av)
 {
 	char *input = av[1];
 	t_flags	f;
-	t_token	tok;
+	t_tokens	tok;
 
 	if (ac < 2)
 	{
