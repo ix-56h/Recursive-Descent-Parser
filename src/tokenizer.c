@@ -6,7 +6,7 @@
 /*   By: niguinti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 05:04:06 by niguinti          #+#    #+#             */
-/*   Updated: 2019/10/23 16:08:24 by niguinti         ###   ########.fr       */
+/*   Updated: 2019/10/23 17:53:25 by niguinti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 t_tokens	save_token(char *s, int anchor, t_toktype toktype)
 {
 	t_tokens ret;
-
+	ret.tok = toktype;
+	ret.data = strndup(s, anchor);
 	return ret;
 }
 
@@ -42,20 +43,21 @@ t_toktype	get_operator(char *s, t_toktype toktype)
 	return (0);
 }
 
-t_tokens	get_token(char *s, int *i, t_toktype toktype, t_chr_class prev_class)
+t_tokens	get_token(char *s, int *i, t_toktype toktype)
 {
-	t_chr_class chr_class = 0;
-	int anchor = 0;
-	
-	chr_class = get_chr_class[(unsigned char)s[*i]];
+	t_chr_class	chr_class;
+	int			anchor;
+
+	anchor = 1;
+	//printf("i = %d\nanchor = %d chr = %c\n", *i, anchor, s[*i]);
 	while (s[*i] && token_chr_rules[toktype][(chr_class = get_chr_class[(unsigned char)s[*i]])])
 	{
-		// 2 * 222
 		//printf("[%s, '%c', %d]\n", DEBUG_CHR[chr_class], s[*i], anchor);
 		anchor++;
 		(*i)++;
 	}
-	//printf("{%s, \"%.*s\"}\n", DEBUG_TOKEN[toktype], anchor, s + (*i - anchor));
+	//printf("i = %d\nanchor = %d chr = %c\n", *i, anchor, s[*i]);
+	//printf("{%s, \"%.*s\"}\n", DEBUG_TOK[toktype], anchor, s + (*i - anchor));
 	return (save_token(s + (*i - anchor), anchor, toktype));
 }
 
@@ -73,15 +75,31 @@ t_tokens	get_next_token(char *s)
 	if (chr_class == CHR_SP)
 	{
 		ignore_wspace(s, &i);
-		//eat();
 		return (get_next_token(s));
 	}
 	toktype = get_tok_type[chr_class];
-	token = get_token(s, &i, toktype, chr_class);
+	i++;
+	token = get_token(s, &i, toktype);
 	if (token.tok == TOK_OPERATOR && !(token.tok = get_operator(token.data, token.tok)))
 	{
 		token.tok = TOK_ERROR;
 		return (token);
 	}
 	return (token);
+}
+
+int main(int argc, char *argv[])
+{
+	t_tokens	tok;
+
+	(void)argc;
+	tok = get_next_token(argv[1]);
+	while (tok.tok != TOK_EOF && tok.tok != TOK_ERROR)
+	{
+		printf("{%s, \"%s\"}\n", DEBUG_TOK[tok.tok], tok.data);
+		tok = get_next_token(argv[1]);
+	}
+	if (tok.tok == TOK_ERROR)
+		printf("Syntax ERROR\n");
+	return 0;
 }

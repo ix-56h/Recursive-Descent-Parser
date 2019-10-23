@@ -6,7 +6,7 @@
 /*   By: niguinti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 05:04:16 by niguinti          #+#    #+#             */
-/*   Updated: 2019/10/23 15:42:12 by niguinti         ###   ########.fr       */
+/*   Updated: 2019/10/23 17:52:14 by niguinti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct		s_tokens {
 }					t_tokens;
 
 t_tokens	get_sequence_token(char *s, int *i, t_toktype toktype, t_chr_class origin_class);
-t_tokens	get_token(char *s, int *i, t_toktype toktype, t_chr_class prev_class);
+t_tokens	get_token(char *s, int *i, t_toktype toktype);
 void		ignore_chr_class(char *s, int *i, t_chr_class chr_class);
 int			is_opening_class(t_chr_class chr_class);
 t_tokens	save_token(char *s, int anchor, t_toktype toktype);
