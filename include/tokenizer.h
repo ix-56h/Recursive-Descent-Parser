@@ -6,7 +6,7 @@
 /*   By: niguinti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 05:04:16 by niguinti          #+#    #+#             */
-/*   Updated: 2019/10/23 14:03:30 by niguinti         ###   ########.fr       */
+/*   Updated: 2019/10/23 15:42:12 by niguinti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef enum	e_toktype {
 	TOK_PLUS,
 	TOK_MINUS,
 	TOK_MUL,
+	TOK_MOD,
 	TOK_DIVIDE,
 	TOK_MAX
 }				t_toktype;
@@ -46,11 +47,11 @@ typedef struct		s_tokens {
 	char			*data;
 }					t_tokens;
 
-t_tokens	*get_sequence_token(char *s, int *i, t_toktype toktype, t_chr_class origin_class);
-t_tokens	*get_token(char *s, int *i, t_toktype toktype, t_chr_class prev_class);
+t_tokens	get_sequence_token(char *s, int *i, t_toktype toktype, t_chr_class origin_class);
+t_tokens	get_token(char *s, int *i, t_toktype toktype, t_chr_class prev_class);
 void		ignore_chr_class(char *s, int *i, t_chr_class chr_class);
 int			is_opening_class(t_chr_class chr_class);
-t_tokens	*save_token(char *s, int anchor, t_toktype toktype);
-t_tokens	*tokenizer(char *s);
-t_tokens	*get_next_token(char *s);
+t_tokens	save_token(char *s, int anchor, t_toktype toktype);
+t_tokens	tokenizer(char *s);
+t_tokens	get_next_token(char *s);
 #endif
