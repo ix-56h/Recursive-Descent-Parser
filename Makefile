@@ -6,7 +6,7 @@
 #    By: niguinti <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/22 18:06:27 by niguinti          #+#    #+#              #
-#    Updated: 2019/10/22 18:10:50 by niguinti         ###   ########.fr        #
+#    Updated: 2019/10/25 06:15:42 by niguinti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ INCDIR		= include/
 # Source files (Can be changed)
 
 SRC			=	main.c				misc.c	\
+				tokenizer.c					\
 
 # Some tricks in order to get the makefile doing his job the way I want (Can't be changed)
 

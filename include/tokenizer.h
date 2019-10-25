@@ -1,23 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: niguinti <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/01 05:04:16 by niguinti          #+#    #+#             */
-/*   Updated: 2019/10/23 17:52:14 by niguinti         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef FT_TOK_H
-# define FT_TOK_H
+#ifndef TOKENIZER_H
+# define TOKENIZER_H
 typedef enum	e_toktype {
 	TOK_ERROR,
 	TOK_SP,
 	TOK_EQUAL,
-	TOK_LSUB,
-	TOK_RSUB,
+	TOK_LPAREN,
+	TOK_RPAREN,
 	TOK_EOF,
 	TOK_DIGIT,
 	/*
@@ -37,8 +25,8 @@ typedef enum	e_chr_class {
 	CHR_SP,
 	CHR_DIGIT,
 	CHR_OPERATOR,
-	CHR_RSUB,
-	CHR_LSUB,
+	CHR_RPAREN,
+	CHR_LPAREN,
 	CHR_MAX
 }				t_chr_class;
 
@@ -47,8 +35,14 @@ typedef struct		s_tokens {
 	char			*data;
 }					t_tokens;
 
+extern t_chr_class		get_chr_class[255];
+extern t_toktype	token_chr_rules[TOK_MAX][CHR_MAX];
+extern t_toktype	get_tok_type[CHR_MAX];
+extern char	DEBUG_TOK[TOK_MAX][11];
+
 t_tokens	get_sequence_token(char *s, int *i, t_toktype toktype, t_chr_class origin_class);
 t_tokens	get_token(char *s, int *i, t_toktype toktype);
+t_toktype	get_operator(char *s);
 void		ignore_chr_class(char *s, int *i, t_chr_class chr_class);
 int			is_opening_class(t_chr_class chr_class);
 t_tokens	save_token(char *s, int anchor, t_toktype toktype);

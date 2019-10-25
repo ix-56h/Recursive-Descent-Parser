@@ -1,20 +1,51 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: niguinti <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/01 05:04:06 by niguinti          #+#    #+#             */
-/*   Updated: 2019/10/23 17:53:25 by niguinti         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "rdp.h"
 
-#include "tokenizer.h"
-#include "tokenizer_rules.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+t_chr_class		get_chr_class[255] = {
+	[' '] = CHR_SP,
+	['\t'] = CHR_SP,
+
+	['-'] = CHR_OPERATOR,
+	['%'] = CHR_OPERATOR,
+	['/'] = CHR_OPERATOR,
+	['*'] = CHR_OPERATOR,
+	['+'] = CHR_OPERATOR,
+	['='] = CHR_OPERATOR,
+
+	['('] = CHR_RPAREN,
+	[')'] = CHR_LPAREN,
+
+	['0' ... '9'] = CHR_DIGIT
+};
+
+t_toktype	token_chr_rules[TOK_MAX][CHR_MAX] = {
+	[TOK_SP] = {[CHR_SP] = 1,},
+	[TOK_DIGIT] = {[CHR_DIGIT] = 1,},
+	[TOK_OPERATOR] = {[CHR_OPERATOR] = 1, },
+	[TOK_LPAREN] = {},
+	[TOK_RPAREN] = {},
+};
+
+t_toktype	get_tok_type[CHR_MAX] = {
+	[CHR_SP] = TOK_SP,
+	[CHR_DIGIT] = TOK_DIGIT,
+	[CHR_RPAREN] = TOK_RPAREN,
+	[CHR_LPAREN] = TOK_LPAREN,
+	[CHR_OPERATOR] = TOK_OPERATOR
+};
+
+char	DEBUG_TOK[TOK_MAX][11] = {
+	[TOK_SP] = "TOK_SP",
+	[TOK_EQUAL] = "TOK_EQUAL",
+	[TOK_LPAREN] = "TOK_LPAREN",
+	[TOK_RPAREN] = "TOK_RPAREN",
+	[TOK_EOF] = "TOK_EOF",
+	[TOK_DIGIT] = "TOK_DIGIT",
+	[TOK_PLUS] = "TOK_PLUS",
+	[TOK_MINUS] = "TOK_MINUS",
+	[TOK_MUL] = "TOK_MUL",
+	[TOK_MOD] = "TOK_MOD",
+	[TOK_DIVIDE] = "TOK_DIVIDE"
+};
 
 t_tokens	save_token(char *s, int anchor, t_toktype toktype)
 {
@@ -30,7 +61,7 @@ void	ignore_wspace(char *s, int *i)
 		(*i)++;
 }
 
-t_toktype	get_operator(char *s, t_toktype toktype)
+t_toktype	get_operator(char *s)
 {
 	if (!strcmp(s, "+"))
 		return (TOK_PLUS);
@@ -80,7 +111,7 @@ t_tokens	get_next_token(char *s)
 	toktype = get_tok_type[chr_class];
 	i++;
 	token = get_token(s, &i, toktype);
-	if (token.tok == TOK_OPERATOR && !(token.tok = get_operator(token.data, token.tok)))
+	if (token.tok == TOK_OPERATOR && !(token.tok = get_operator(token.data)))
 	{
 		token.tok = TOK_ERROR;
 		return (token);
@@ -88,7 +119,7 @@ t_tokens	get_next_token(char *s)
 	return (token);
 }
 
-int main(int argc, char *argv[])
+/*int main(int argc, char *argv[])
 {
 	t_tokens	tok;
 
@@ -102,4 +133,4 @@ int main(int argc, char *argv[])
 	if (tok.tok == TOK_ERROR)
 		printf("Syntax ERROR\n");
 	return 0;
-}
+}*/
