@@ -1,26 +1,31 @@
 #include "rdp.h"
 
-void	factor(char *s, t_tokens *cur)
+t_node	*save_node(t_node *left, t_tokens tok, t_node *right)
+{
+	return ((t_node*)0);
+}
+
+void	factor(char *s, t_tokens *cur, t_node *node)
 {
 	if (cur->tok == TOK_DIGIT)
 		*cur = get_next_token(s);
 	else if (cur->tok == TOK_LPAREN)
 	{
 		*cur = get_next_token(s);
-		expr(s, cur);
+		expr(s, cur, node);
 	}
 	else
 	{
-		printf("Syntax error : %s\n", cur->data);
+		printf("Syntax error : %s\n", DEBUG_TOK[cur->tok]);
 		free(cur->data);
 		exit(1);
 	}
 	free(cur->data);
 }
 
-void	term(char *s, t_tokens *cur)
+void	term(char *s, t_tokens *cur, t_node *node)
 {
-	factor(s, cur);
+	factor(s, cur, node);
 	while (cur->tok == TOK_MUL || cur->tok == TOK_DIVIDE)
 	{
 		if (cur->tok == TOK_MUL)
@@ -29,7 +34,7 @@ void	term(char *s, t_tokens *cur)
 			*cur = get_next_token(s);
 		else
 		{
-			printf("Syntax error : %s\n", cur->data);
+			printf("Syntax error : %s\n", DEBUG_TOK[cur->tok]);
 			free(cur->data);
 			exit(1);
 		}
@@ -37,19 +42,19 @@ void	term(char *s, t_tokens *cur)
 	}
 }
 
-void	expr(char *s, t_tokens *cur)
+void	expr(char *s, t_tokens *cur, t_node *node)
 {
-	term(s, cur);
+	term(s, cur, node);
 
 	while (cur->tok == TOK_PLUS || cur->tok == TOK_MINUS)
 	{
 		if (cur->tok == TOK_PLUS)
-			get_next_token(s);
+			*cur = get_next_token(s);
 		else if (cur->tok == TOK_MINUS)
-			get_next_token(s);
+			*cur = get_next_token(s);
 		else
 		{
-			printf("Syntax error : %s\n", cur->data);
+			printf("Syntax error : %s\n", DEBUG_TOK[cur->tok]);
 			free(cur->data);
 			exit(1);
 		}
@@ -59,9 +64,10 @@ void	expr(char *s, t_tokens *cur)
 
 int main(int ac, char **av)
 {
-	char *input = av[1];
-	t_flags	f;
+	char		*input = av[1];
+	t_flags		f;
 	t_tokens	tok;
+	t_node		*node;
 
 	if (ac < 2)
 	{
@@ -72,6 +78,6 @@ int main(int ac, char **av)
 	if (f.debug_all)
 		printf("f.d = %u\nf.a = %u\n", f.debug_all, f.ast_draw);
 	tok = get_next_token(input);
-	expr(input, &tok);
+	expr(input, &tok, node);
 	return 0;
 }

@@ -38,7 +38,7 @@ typedef struct		s_tokens {
 extern t_chr_class		get_chr_class[255];
 extern t_toktype	token_chr_rules[TOK_MAX][CHR_MAX];
 extern t_toktype	get_tok_type[CHR_MAX];
-extern char	DEBUG_TOK[TOK_MAX][11];
+extern char	DEBUG_TOK[TOK_MAX][27];
 
 t_tokens	get_sequence_token(char *s, int *i, t_toktype toktype, t_chr_class origin_class);
 t_tokens	get_token(char *s, int *i, t_toktype toktype);

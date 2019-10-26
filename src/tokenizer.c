@@ -33,7 +33,8 @@ t_toktype	get_tok_type[CHR_MAX] = {
 	[CHR_OPERATOR] = TOK_OPERATOR
 };
 
-char	DEBUG_TOK[TOK_MAX][11] = {
+char	DEBUG_TOK[TOK_MAX][27] = {
+	[TOK_ERROR] = "ERROR token not recognized",
 	[TOK_SP] = "TOK_SP",
 	[TOK_EQUAL] = "TOK_EQUAL",
 	[TOK_LPAREN] = "TOK_LPAREN",
@@ -99,6 +100,7 @@ t_tokens	get_next_token(char *s)
 	t_tokens		token;
 	static	int		i = 0;
 
+	//for shell grammar implementation, make a error handler for go to next compunds_list
 	if (s[i] == '\0')
 		return (save_token(NULL, 0, TOK_EOF));
 	if (!(chr_class = get_chr_class[(unsigned char)s[i]]))
