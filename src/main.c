@@ -7,16 +7,25 @@ t_node	*save_node(t_node *left, t_tokens tok, t_node *right)
 
 void	factor(char *s, t_tokens *cur, t_node *node)
 {
+	printf("fac -> %s\n", DEBUG_TOK[cur->tok]);
 	if (cur->tok == TOK_DIGIT)
 		*cur = get_next_token(s);
 	else if (cur->tok == TOK_LPAREN)
 	{
 		*cur = get_next_token(s);
 		expr(s, cur, node);
+		printf("fac2 -> %s\n", DEBUG_TOK[cur->tok]);
+		if (cur->tok == TOK_RPAREN)
+			*cur = get_next_token(s);
+		else
+		{
+			printf("1Syntax error : %s\n", DEBUG_TOK[cur->tok]);
+			exit(1);
+		}
 	}
 	else
 	{
-		printf("Syntax error : %s\n", DEBUG_TOK[cur->tok]);
+		printf("2Syntax error : %s\n", DEBUG_TOK[cur->tok]);
 		free(cur->data);
 		exit(1);
 	}
@@ -28,17 +37,18 @@ void	term(char *s, t_tokens *cur, t_node *node)
 	factor(s, cur, node);
 	while (cur->tok == TOK_MUL || cur->tok == TOK_DIVIDE)
 	{
+		printf("term -> %s\n", DEBUG_TOK[cur->tok]);
 		if (cur->tok == TOK_MUL)
 			*cur = get_next_token(s);
 		else if (cur->tok == TOK_DIVIDE)
 			*cur = get_next_token(s);
 		else
 		{
-			printf("Syntax error : %s\n", DEBUG_TOK[cur->tok]);
+			printf("3Syntax error : %s\n", DEBUG_TOK[cur->tok]);
 			free(cur->data);
 			exit(1);
 		}
-		free(cur->data);
+		factor(s, cur, node);
 	}
 }
 
@@ -48,17 +58,18 @@ void	expr(char *s, t_tokens *cur, t_node *node)
 
 	while (cur->tok == TOK_PLUS || cur->tok == TOK_MINUS)
 	{
+		printf("expr -> %s\n", DEBUG_TOK[cur->tok]);
 		if (cur->tok == TOK_PLUS)
 			*cur = get_next_token(s);
 		else if (cur->tok == TOK_MINUS)
 			*cur = get_next_token(s);
 		else
 		{
-			printf("Syntax error : %s\n", DEBUG_TOK[cur->tok]);
+			printf("4Syntax error : %s\n", DEBUG_TOK[cur->tok]);
 			free(cur->data);
 			exit(1);
 		}
-		free(cur->data);
+		term(s, cur, node);
 	}
 }
 

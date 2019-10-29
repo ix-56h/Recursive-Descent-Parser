@@ -11,8 +11,8 @@ t_chr_class		get_chr_class[255] = {
 	['+'] = CHR_OPERATOR,
 	['='] = CHR_OPERATOR,
 
-	['('] = CHR_RPAREN,
-	[')'] = CHR_LPAREN,
+	['('] = CHR_LPAREN,
+	[')'] = CHR_RPAREN,
 
 	['0' ... '9'] = CHR_DIGIT
 };
