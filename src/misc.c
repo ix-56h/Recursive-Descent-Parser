@@ -33,10 +33,10 @@ void	draw_ast(t_node *n)
 	}
 }
 
-void bst_print_dot_null(int key, int nullcount, FILE* stream)
+void bst_print_dot_null(char *data, int key, int nullcount, FILE* stream)
 {
     fprintf(stream, "    null%d [shape=point];\n", nullcount);
-    fprintf(stream, "    %d -> null%d;\n", key, nullcount);
+    fprintf(stream, "    \"%s_%d\" -> null%d;\n", data, key, nullcount);
 }
 
 void bst_print_dot_aux(t_node* node, FILE* stream)
@@ -45,19 +45,19 @@ void bst_print_dot_aux(t_node* node, FILE* stream)
 
     if (node->left)
     {
-        fprintf(stream, "    %d -> %d;\n", node->key, node->left->key);
+        fprintf(stream, "    \"%s_%d\" -> \"%s_%d\";\n", node->data, node->key, node->left->data, node->left->key);
         bst_print_dot_aux(node->left, stream);
     }
     else
-        bst_print_dot_null(node->key, nullcount++, stream);
+        bst_print_dot_null(node->data, node->key, nullcount++, stream);
 
     if (node->right)
     {
-        fprintf(stream, "    %d -> %d;\n", node->key, node->right->key);
+        fprintf(stream, "    \"%s_%d\" -> \"%s_%d\";\n", node->data, node->key, node->right->data, node->right->key);
         bst_print_dot_aux(node->right, stream);
     }
     else
-        bst_print_dot_null(node->key, nullcount++, stream);
+        bst_print_dot_null(node->data, node->key, nullcount++, stream);
 }
 
 void bst_print_dot(t_node* tree, FILE* stream)
@@ -68,7 +68,7 @@ void bst_print_dot(t_node* tree, FILE* stream)
     if (!tree)
         fprintf(stream, "\n");
     else if (!tree->right && !tree->left)
-        fprintf(stream, "    %d;\n", tree->key);
+        fprintf(stream, "    \"%s_%d\";\n", tree->data, tree->key);
     else
         bst_print_dot_aux(tree, stream);
 
